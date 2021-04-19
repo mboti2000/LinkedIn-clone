@@ -70,14 +70,14 @@ const Feed = () =>{
             </div>
             
             <FlipMove>
-                {posts.map(post =>{
+                {posts.map(({ id, data:{ name, description, message, photoURL }}) =>{
                     return (
                         <Post 
-                            key={post.id}
-                            name={post.data.name} 
-                            description={post.data.description} 
-                            message={post.data.message} 
-                            photoURL={post.data.photoURL}
+                            key={id}
+                            name={name}
+                            description={description}
+                            message={message} 
+                            photoURL={photoURL}
                         />
                     );
                 })}

@@ -26,8 +26,8 @@ const Login = () =>{
                 dispatch(login({
                     email: userAuth.user.email,
                     uid: userAuth.user.uid,
-                    displayName: name,
-                    photoURL: profilePic
+                    displayName: userAuth.user.displayName,
+                    photoURL: userAuth.user.photoURL
                 }));
             })
         }).catch(err => alert(err.message));
@@ -42,7 +42,7 @@ const Login = () =>{
                 email: userAuth.user.email,
                 uid: userAuth.user.uid,
                 displayName: userAuth.user.displayName,
-                photoURL: userAuth.user.phoneNumber
+                photoURL: userAuth.user.photoURL
             }));
         }).catch(err => alert(err));
     };
