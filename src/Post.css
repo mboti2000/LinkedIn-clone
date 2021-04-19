@@ -32,3 +32,8 @@
     justify-content: space-evenly;
 }
 
+.post__delete {
+   margin-left: auto;
+   margin-top: -10px;
+}
+

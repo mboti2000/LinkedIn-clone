@@ -6,7 +6,7 @@ import { db } from './firebase';
 import firebase from 'firebase';
 
 import { selectUser } from './features/userSlice';
-import {  useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 
 import CreateIcon from '@material-ui/icons/Create';
 import ImageIcon from '@material-ui/icons/Image';
@@ -14,23 +14,27 @@ import SubsciptionsIcon from '@material-ui/icons/Subscriptions';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import CalendarViewDayIcon from '@material-ui/icons/CalendarViewDay';
 import FlipMove from 'react-flip-move';
+import { selectPosts, setPosts } from './features/postSlice';
 
 const Feed = () =>{
-    const [posts, setPosts] = useState([]);
+    //const [posts, setPosts] = useState([]);
     const [input, setInput] = useState('');
 
+    const dispatch = useDispatch();
+    const posts = useSelector(selectPosts);
     const user = useSelector(selectUser);
 
     useEffect(() =>{
         db.collection('posts')
             .orderBy('timestamp', 'desc')
             .onSnapshot(snapshot =>{
-                setPosts(snapshot.docs.map(doc =>{
-                    return {
+                const postsData = snapshot.docs.map(doc =>{
+                    return ({
                         id: doc.id,
                         data: doc.data()
-                    };
-            }))
+                    });
+                });
+                dispatch(setPosts(postsData));
         });
     }, []);
 
@@ -74,6 +78,7 @@ const Feed = () =>{
                     return (
                         <Post 
                             key={id}
+                            id={id}
                             name={name}
                             description={description}
                             message={message} 

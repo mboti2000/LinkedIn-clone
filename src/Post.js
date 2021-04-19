@@ -7,16 +7,41 @@ import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ChatOutlinedIcon from '@material-ui/icons/ChatOutlined';
 import ShareOutlinedIcon from '@material-ui/icons/ShareOutlined';
 import SendOutlinedIcon from '@material-ui/icons/SendOutlined';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
-const Post = forwardRef(({ name, description, message, photoURL }, ref) =>{
+import {  useDispatch, useSelector } from 'react-redux';
+import { selectPosts, deletePost } from './features/postSlice';
+import { selectUser } from './features/userSlice';
+import { db } from './firebase';
+
+
+const Post = forwardRef(({ id, name, description, message, photoURL }, ref) =>{
+    const dispatch = useDispatch();
+    const posts = useSelector(selectPosts);
+    const user = useSelector(selectUser);
+
+    const renderDeleteButton = () =>{
+        if(user.email === description){
+            return (
+                <div onClick={() => db.collection('posts').doc(id).delete()} class="post__delete">
+                    <InputOption Icon={DeleteOutlineIcon} title="Delete" color="red"/>
+                </div>
+            );
+        }
+    };
+
     return (
         <div ref={ref} className="post">
             <div className="post__header">
+                
                 <Avatar src={photoURL}></Avatar>
                 <div className="post__info">
                     <h2>{name}</h2>
                     <p>{description}</p>
                 </div>
+
+                {renderDeleteButton()}
+                
             </div>
 
             <div className="post__body">
